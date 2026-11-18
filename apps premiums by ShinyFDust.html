@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>apps premiums by ShinyFDust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff3f8;--surface:#ffffff;--ink:#3a1f2d;--mute:#7b5a6b;--out:#3a1f2d;
+  --pink:#ff5fa2;--pink-soft:#ffdcea;--green:#1fae66;--green-soft:#d8f6e5;--green-deep:#0c6a42;--line:#f3c4d8;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1b1117;--surface:#2a1a23;--ink:#fde8f1;--mute:#c9a3b6;--out:#0b0509;
+  --pink:#ff7ab4;--pink-soft:#4a2338;--green:#3ddc8a;--green-soft:#15382a;--green-deep:#7be9b0;--line:#5a3248;}}
+:root[data-theme="dark"]{--bg:#1b1117;--surface:#2a1a23;--ink:#fde8f1;--mute:#c9a3b6;--out:#0b0509;--pink:#ff7ab4;--pink-soft:#4a2338;--green:#3ddc8a;--green-soft:#15382a;--green-deep:#7be9b0;--line:#5a3248}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);background-image:radial-gradient(var(--line) 1.4px,transparent 1.4px);background-size:22px 22px;color:var(--ink);font:400 16px/1.6 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:Fredoka,system-ui,sans-serif;line-height:1.2;margin:0}
+.px{font-family:"Press Start 2P",ui-monospace,monospace;font-weight:400;line-height:1.5}
+section{max-width:960px;margin:0 auto;padding:44px 18px 8px}
+h2{font-size:.95rem;color:var(--green-deep);margin-bottom:8px}
+.sub{color:var(--mute);margin:0 0 18px}
+.box{background:var(--surface);border:3px solid var(--out);border-radius:16px;box-shadow:4px 4px 0 var(--out)}
+.btn{display:inline-block;background:var(--green);color:#fff;font:600 1.05rem Fredoka,sans-serif;padding:11px 24px;border-radius:14px;text-decoration:none;border:3px solid var(--out);cursor:pointer;box-shadow:4px 4px 0 var(--out)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--out)}
+.btn.pink{background:var(--pink)}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+
+/* loading */
+#loader{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;background:linear-gradient(180deg,var(--pink) 0%,#ff9ccb 60%,var(--green) 130%);color:#fff;transition:opacity .5s,transform .5s}
+#loader.done{opacity:0;transform:scale(1.1);pointer-events:none}
+#loader .logo{font-size:.95rem;text-shadow:3px 3px 0 var(--out)}
+#loader .pet{font-size:4.2rem;animation:hop .6s steps(2) infinite}
+@keyframes hop{50%{transform:translateY(-16px) rotate(-6deg)}}
+.lbar{width:min(300px,80vw);height:26px;border:3px solid var(--out);border-radius:8px;background:#fff;padding:3px}
+.lbar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--green) 0 14px,#fff 14px 17px);border-radius:3px}
+#lmsg{font:600 1rem Fredoka;min-height:1.6em;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+#start{display:none;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{transform:scale(1.06)}}
+#skip{background:none;border:0;color:#fff;text-decoration:underline;font:inherit;cursor:pointer;opacity:.85}
+
+/* hero */
+.hero{background:linear-gradient(160deg,var(--pink) 0%,#ff8fc0 55%,var(--green) 135%);color:#fff;padding:48px 18px 70px;text-align:center;border-bottom:4px solid var(--out)}
+.hero .px{font-size:1.15rem;text-shadow:3px 3px 0 var(--out)}
+.hero p{max-width:440px;margin:14px auto 18px}
+#ball{font-size:3.4rem;background:none;border:0;cursor:pointer;display:block;margin:0 auto 4px;transition:transform .1s}
+#ball:active{transform:scale(.85) rotate(-8deg)}
+#xp{display:inline-block;background:var(--surface);color:var(--ink);border:3px solid var(--out);border-radius:10px;padding:4px 12px;margin-bottom:16px;font-size:.6rem}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:-36px auto 0;max-width:960px;padding:0 18px}
+.fact{padding:12px;text-align:center}
+.fact b{display:block;font:600 1.15rem Fredoka;color:var(--pink)}
+.fact span{font-size:.82rem;color:var(--mute)}
+
+/* pricelist */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:3px solid var(--out);background:var(--surface);color:var(--ink);padding:5px 14px;border-radius:12px;font:600 .95rem Fredoka;cursor:pointer;box-shadow:3px 3px 0 var(--out)}
+.tab[aria-pressed="true"]{background:var(--pink);color:#fff}
+input[type=search]{width:100%;padding:11px 16px;border-radius:14px;border:3px solid var(--out);background:var(--surface);color:var(--ink);font:inherit;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.card{padding:14px;display:flex;flex-direction:column;gap:5px;position:relative}
+.card .em{font-size:2.1rem}
+.card h3{font-size:1.05rem}
+.card small{color:var(--mute)}
+.price{font:700 1.25rem Fredoka;color:var(--green-deep)}
+.tag{align-self:flex-start;background:var(--green-soft);color:var(--green-deep);font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:8px;border:2px solid var(--out)}
+.hot{position:absolute;top:-10px;right:-6px;background:var(--pink);color:#fff;font-size:.5rem;padding:5px 7px;border:2px solid var(--out);border-radius:6px;transform:rotate(6deg)}
+.qty{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:6px}
+.qty button{width:36px;height:36px;border-radius:10px;border:3px solid var(--out);background:var(--pink);color:#fff;font:700 1.2rem Fredoka;cursor:pointer}
+.qty output{min-width:22px;text-align:center;font-weight:800}
+
+/* charts */
+.panel{padding:18px;margin-bottom:18px}
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:118px 1fr 40px;align-items:center;gap:8px;font-size:.86rem}
+.bar .tr{height:20px;border:3px solid var(--out);border-radius:6px;background:var(--pink-soft);padding:2px}
+.bar i{display:block;height:100%;width:0;border-radius:2px;background:repeating-linear-gradient(90deg,var(--green) 0 10px,var(--pink) 10px 20px);transition:width 1s steps(14)}
+.donut{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:center}
+.legend{display:grid;gap:6px;font-size:.92rem}
+.legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;border:2px solid var(--out);background:var(--c);margin-right:8px;vertical-align:-2px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:420px}
+th{background:var(--green);color:#fff;font-family:Fredoka;font-weight:600;text-align:left;padding:10px 12px}
+td{padding:10px 12px;border-bottom:2px dashed var(--line)}
+tr:nth-child(even) td{background:var(--pink-soft)}
+
+/* level map */
+.path{list-style:none;margin:0;padding:0}
+.path li{position:relative;width:90%;padding:14px 16px 14px 62px;margin-bottom:34px;background:var(--surface);border:3px solid var(--out);border-radius:16px;box-shadow:4px 4px 0 var(--out)}
+.path li:nth-child(even){margin-left:auto}
+.path li:not(:last-child)::after{content:"▼";position:absolute;left:50%;bottom:-30px;color:var(--pink);font-size:1.1rem}
+.path li::before{content:"LV" attr(data-n);position:absolute;left:10px;top:12px;width:42px;height:42px;display:grid;place-items:center;background:var(--green);color:#fff;border:3px solid var(--out);border-radius:10px;font:400 .6rem "Press Start 2P",monospace}
+.path li:nth-child(even)::before{background:var(--pink)}
+.path b{font-family:Fredoka;color:var(--pink);display:block;font-size:1.05rem}
+.path li:last-child{background:var(--green-soft)}
+pre{background:var(--green-soft);color:var(--green-deep);padding:14px;border:3px solid var(--out);border-radius:14px;white-space:pre-wrap;font:600 .9rem/1.5 Nunito;margin:0 0 14px}
+details{background:var(--surface);border:3px solid var(--out);border-radius:14px;box-shadow:3px 3px 0 var(--out);padding:12px 16px;margin-bottom:12px}
+summary{font:600 1.02rem Fredoka;cursor:pointer;color:var(--green-deep)}
+details[open] summary{color:var(--pink)}
+.warn{background:var(--pink-soft);padding:16px}
+.warn ul{margin:8px 0 0;padding-left:20px}
+footer{text-align:center;padding:40px 18px 50px;color:var(--mute)}
+.cart{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:4px solid var(--out);display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:5}
+.cart strong{font:700 1.15rem Fredoka;color:var(--green-deep)}
+.cart .btn{padding:9px 16px;font-size:.95rem}
+.pop{position:fixed;pointer-events:none;font:400 .7rem "Press Start 2P";color:#fff;text-shadow:2px 2px 0 var(--out);animation:up .8s forwards;z-index:20}
+@keyframes up{to{transform:translateY(-60px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+#loader .logo{font-size:.8rem}
+.grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.card h4{font:600 .95rem Fredoka;color:var(--pink);margin:8px 0 2px}
+.pl{list-style:none;margin:0;padding:0}
+.pl li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:2px dashed var(--line);font-size:.92rem}
+.pl b{font-family:Fredoka;color:var(--green-deep);white-space:nowrap}
+.card .btn{margin-top:14px;text-align:center;font-size:.95rem;padding:9px}
+.rules{margin:8px 0 0;padding-left:20px}.rules li{margin-bottom:4px}
+.f{width:100%;padding:9px 12px;border:3px solid var(--out);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit}
+.rc{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.rc label{font-size:.85rem;color:var(--mute);display:grid;gap:4px}
+#rres{font:700 1.6rem Fredoka;color:var(--green-deep);margin-top:12px}
+.formula{font-size:.62rem;color:var(--pink);margin:0 0 12px}
+details details{box-shadow:none;margin:8px 0;background:var(--bg);padding:8px 12px}
+details details summary{color:var(--pink)}
+.card details.g{border:0;box-shadow:none;padding:0;margin:6px 0;background:none;border-radius:0}
+.card details.g summary{font:600 .95rem Fredoka;color:var(--pink)}
+</style>
+<noscript><style>#loader{display:none}</style></noscript>
+</head>
+<body>
+
+<div id="loader" role="status" aria-live="polite">
+  <div class="logo px">APPS PREMIUMS<br>by ShinyFDust</div>
+  <div class="pet" aria-hidden="true"><svg viewBox="0 0 100 100" width="1em" height="1em" aria-hidden="true" style="display:block;margin:auto"><ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity=".15"/><path d="M12 62C12 34 30 18 50 18s38 16 38 44c0 16-16 24-38 24S12 78 12 62Z" fill="#fff" stroke="#3a1f2d" stroke-width="4"/><path d="M42 21q8 9 16 0" fill="none" stroke="#3a1f2d" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="56" r="4.5" fill="#3a1f2d"/><circle cx="64" cy="56" r="4.5" fill="#3a1f2d"/><path d="M44 65q6 6 12 0" fill="none" stroke="#3a1f2d" stroke-width="3" stroke-linecap="round"/><ellipse cx="27" cy="65" rx="6" ry="4" fill="#ff9ccb"/><ellipse cx="73" cy="65" rx="6" ry="4" fill="#ff9ccb"/></svg></div>
+  <div class="lbar"><i id="lfill"></i></div>
+  <div id="lmsg">Memuat…</div>
+  <button class="btn pink px" id="start" style="font-size:.7rem">▶ PRESS START</button>
+  <button id="skip">Lewati</button>
+</div>
+
+<header class="hero">
+  <button id="ball" aria-label="Elus Mochi untuk dapat XP"><svg viewBox="0 0 100 100" width="1em" height="1em" aria-hidden="true" style="display:block;margin:auto"><ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity=".15"/><path d="M12 62C12 34 30 18 50 18s38 16 38 44c0 16-16 24-38 24S12 78 12 62Z" fill="#fff" stroke="#3a1f2d" stroke-width="4"/><path d="M42 21q8 9 16 0" fill="none" stroke="#3a1f2d" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="56" r="4.5" fill="#3a1f2d"/><circle cx="64" cy="56" r="4.5" fill="#3a1f2d"/><path d="M44 65q6 6 12 0" fill="none" stroke="#3a1f2d" stroke-width="3" stroke-linecap="round"/><ellipse cx="27" cy="65" rx="6" ry="4" fill="#ff9ccb"/><ellipse cx="73" cy="65" rx="6" ry="4" fill="#ff9ccb"/></svg></button>
+  <div id="xp" class="px">Mochi XP: 0</div>
+  <h1 class="px">APPS PREMIUMS<br>by ShinyFDust</h1>
+  <p>Netflix, Spotify, Canva, dan banyak lagi. Baca aturan, pilih paket, tanya stok ke admin, lalu akun aktif.</p>
+  <a class="btn" href="#pricelist">▶ LIHAT HARGA</a>
+  <a class="btn pink" href="https://wa.me/6289688185643" target="_blank" rel="noopener">💬 Chat Admin</a>
+</header>
+
+<div class="facts">
+  <div class="fact box"><b>Jam kerja</b><span>Hari biasa 12.00–21.30<br>Hari libur 10.00–22.30</span></div>
+  <div class="fact box"><b>5–30 menit</b><span>Estimasi akun diberikan</span></div>
+  <div class="fact box"><b>Garansi 25 hari</b><span>Untuk durasi 1 bulan</span></div>
+</div>
+
+<section id="aturan">
+  <div class="warn box">
+    <h2 class="px" style="color:var(--pink)">⚠ ATURAN MAIN</h2>
+    <p class="sub" style="margin-bottom:0">Baca dulu sebelum lihat harga.</p>
+    <ul class="rules">
+      <li>Login yang menggunakan kode wajib janjian dengan admin.</li>
+      <li>Garansi 25 hari untuk pembelian durasi 1 bulan.</li>
+      <li>Garansi hanya untuk backfree/wiped/incorrect pw. Akun dicuri = no garansi.</li>
+      <li>Dilarang ganti email dan pw.</li>
+    </ul>
+    <details style="margin-top:12px"><summary>Lihat 5 aturan lainnya (termasuk denda)</summary>
+    <ul class="rules">
+      <li>Dilarang batalkan langganan.</li>
+      <li>Dilarang otak-atik pembayaran.</li>
+      <li>Login 1 device only, tidak boleh pindah device.</li>
+      <li>Wajib ss login 1x24 jam.</li>
+      <li>Melanggar? Denda 500k.</li>
+    </ul></details>
+  </div>
+</section>
+
+<section id="pricelist">
+  <h2 class="px">★ PRICELIST ★</h2>
+  <p class="sub">Tanyakan stok ke admin sebelum order. Tekan tombol di tiap kartu untuk chat langsung.</p>
+  <div class="tabs" id="tabs" role="group" aria-label="Kategori"></div>
+  <input type="search" id="q" placeholder="Cari aplikasi…" aria-label="Cari aplikasi">
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="bagan">
+  <h2 class="px">★ STATISTIK ★</h2>
+  <p class="sub">Dihitung dari pricelist di atas.</p>
+  <div class="panel box">
+    <h3 style="margin-bottom:12px">💸 Harga mulai dari (paket termurah)</h3>
+    <div class="bars" id="bars"></div>
+  </div>
+  <div class="panel box">
+    <h3 style="margin-bottom:12px">🍩 Jumlah pilihan paket per kategori</h3>
+    <div class="donut"><div id="donut"></div><div class="legend" id="legend"></div></div>
+  </div>
+</section>
+
+<section id="cara-order">
+  <h2 class="px">★ PETA ORDER ★</h2>
+  <p class="sub"><b>Sebelum order, tanyakan stok aplikasi yang kamu mau ada/tersedia.</b></p>
+  <ol class="path">
+    <li data-n="1"><b>Pilih aplikasi</b>Lihat pricelist dan tentukan aplikasi serta paketnya.</li>
+    <li data-n="2"><b>Tanya stok</b>Chat admin dan pastikan stok aplikasi yang kamu mau tersedia.</li>
+    <li data-n="3"><b>Kirim pesanan</b>Kirim format order ke admin lewat WhatsApp.</li>
+    <li data-n="4"><b>Bayar</b>Transfer sesuai harga, lalu kirim bukti pembayaran ke admin.</li>
+    <li data-n="5"><b>Terima akun</b>Akun diberikan 5–30 menit setelah bukti dikirim. Wajib ss login 1x24 jam.</li>
+    <li data-n="6"><b>Garansi ★</b>Ada kendala? Lapor admin selama masa garansi 25 hari (durasi 1 bulan).</li>
+  </ol>
+  <h3 style="margin:22px 0 8px">Contoh format pesan</h3>
+  <pre id="tpl">Halo kak, aku mau order:
+Aplikasi: Netflix
+Paket: 1p2u 1 month
+Harga: Rp20.000
+Nama: Sari Dewi
+Email (untuk invite): sari@email.com
+Pembayaran: Dana</pre>
+  <button class="btn pink" id="copy">Salin contoh</button>
+  <a class="btn" href="https://wa.me/6289688185643" target="_blank" rel="noopener">💬 Order: 0896-8818-5643</a>
+</section>
+
+<section id="refund">
+  <h2 class="px">★ RUMUS REFUND ★</h2>
+  <div class="panel box">
+    <p class="px formula">harga beli ÷ durasi × sisa durasi × service fee = total refund</p>
+    <p><b>Contoh:</b> 18.000 ÷ 60 × 42 × 0.7 = 8.820</p>
+    <details><summary>Lihat ketentuan service fee</summary>
+    <div class="scroll"><table>
+      <thead><tr><th>Service fee</th><th>Ketentuan</th></tr></thead>
+      <tbody>
+        <tr><td>0.8</td><td>Pemakaian kurang dari 1 minggu</td></tr>
+        <tr><td>0.7</td><td>Belum pernah claim garansi, tapi sudah lebih dari seminggu</td></tr>
+        <tr><td>0.6</td><td>Sudah pernah claim garansi 1–2×</td></tr>
+        <tr><td>0.5</td><td>Sudah pernah claim garansi 3×</td></tr>
+        <tr><td>0.4</td><td>Sudah pernah claim garansi lebih dari 3×</td></tr>
+      </tbody>
+    </table></div>
+    <p><small>Untuk beberapa aplikasi, jika durasi 1 bulan maka dihitung 25 hari.</small></p>
+    <p>Service fee ada di mana-mana, perusahaan besar pun punya karena ada biaya admin dan staff. Di sini, service fee adalah biaya untuk waktu yang sudah terpakai.</p>
+    </details>
+  </div>
+  <div class="panel box">
+    <h3 style="margin-bottom:10px">🧮 Hitung refund</h3>
+    <div class="rc">
+      <label>Harga beli (Rp)<input class="f" id="rh" type="number" value="18000" inputmode="numeric"></label>
+      <label>Durasi (hari)<input class="f" id="rd" type="number" value="60" inputmode="numeric"></label>
+      <label>Sisa durasi (hari)<input class="f" id="rs" type="number" value="42" inputmode="numeric"></label>
+      <label>Service fee<select class="f" id="rf">
+        <option value="0.8">0.8 – kurang dari 1 minggu</option>
+        <option value="0.7" selected>0.7 – belum claim, &gt; 1 minggu</option>
+        <option value="0.6">0.6 – claim 1–2×</option>
+        <option value="0.5">0.5 – claim 3×</option>
+        <option value="0.4">0.4 – claim &gt; 3×</option>
+      </select></label>
+    </div>
+    <div id="rres">Rp0</div>
+  </div>
+</section>
+
+<section id="bayar">
+  <h2 class="px">★ PEMBAYARAN ★</h2>
+  <div class="panel box scroll">
+    <table>
+      <thead><tr><th>Metode</th><th>Nomor</th><th>Atas nama</th></tr></thead>
+      <tbody>
+        <tr><td>Seabank</td><td>901433524570</td><td>R*R*</td></tr>
+        <tr><td>Dana / GoPay / SPay</td><td>Minta ke admin</td><td>R**R/AN*</td></tr>
+        <tr><td>QRIS</td><td>Minta ke admin</td><td>Tyas Store</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="faq">
+  <h2 class="px">★ FAQ ★</h2>
+  <details><summary>Apa perbedaan sharing, anlim, dan private?</summary>
+    <details><summary>Private</summary><p>Akun hanya digunakan oleh 1 orang dan bisa login di beberapa device. Secara umum tidak ada limit, tapi tergantung cara pakainya. Kalau dipakai bareng teman atau orang lain dalam waktu yang sama, bisa saja kena limit nonton.</p></details>
+    <details><summary>Sharing</summary><p>Akun digunakan oleh lebih dari 1 orang, dan 1 orang hanya bisa login di 1 device. Kalau dipakai bersamaan dengan orang lain dalam waktu yang sama, akan kena limit nonton.</p><p><b>Contoh:</b> Disney sharing ke 6 orang, limit nontonnya 3 orang. Maka 3 orang lainnya tidak bisa nonton bersamaan.</p></details>
+    <details><summary>Anlim</summary><p>Sama seperti sistem sharing pada umumnya, bedanya sharing unlimited ini tidak akan kena limit nonton. Tapi kalau tetap kena limit, bisa langsung hubungi seller.</p><p><b>Contoh:</b> Disney sharing ke 3 orang, limit nontonnya 3 orang. Maka semua user tidak akan kena limit nonton.</p></details>
+  </details>
+  <details><summary>Berapa lama akun diberikan setelah pembayaran?</summary><p>Rata-rata 5 sampai 30 menit setelah kamu mengirim bukti pembayaran ke admin. Kalau lewat dari estimasi itu, admin akan konfirmasi ke kamu jika ada keterlambatan.</p></details>
+  <details><summary>Apakah aplikasi yang kita beli bisa diperpanjang?</summary><p>Tanyakan dulu ke admin, karena setiap aplikasi punya masa yang berbeda-beda. Kemungkinan akan berganti akun/profil.</p></details>
+  <details><summary>Bagaimana kalau akun bermasalah?</summary><p>Hubungi admin selama masa garansi. Akun akan segera diganti dengan yang baru, atau sisa masa aktif dihitung ulang.</p></details>
+  <details><summary>Apakah bisa refund?</summary><p>Setelah order dan barang diterima, tidak bisa refund kecuali ada kesalahan dari admin. Jika kesalahan dari admin, kamu mendapat refund sesuai rumus di atas. Pengecualian: akun dicuri, maka tidak ada refund maupun garansi sama sekali.</p></details>
+</section>
+
+<footer class="px" style="font-size:.6rem">★ THANKS FOR PLAYING ★<br><br>apps premiums by ShinyFDust 💚<br><br><a class="btn" style="font-size:.9rem" href="https://wa.me/6289688185643" target="_blank" rel="noopener">💬 Chat Admin</a></footer>
+
+<script>
+const WA = "6289688185643";
+// [nama, kategori, emoji, catatan, [[judul grup, ["label|harga", ...]], ...]]
+const APPS = [
+["Netflix","Streaming","🍿","Login by empass/code/link",[
+ ["1p1u",["1 day|4k","3 day|9k","7 day|14k","1 month|28k"]],
+ ["1p2u",["1 day|3k","3 day|7k","7 day|10k","1 month|20k"]],
+ ["Semi private",["7 day|17k","1 month (avail ganti pin+nama)|35k"]],
+ ["Private",["1 month fw (inc akses)|150k"]]]],
+["Prime Video","Streaming","🐰","",[["",["Sharing 1b|10.000","Private 1b|25.000"]]]],
+["Loklok","Streaming","🐻","",[["",["Sharing basic 3u1m|17.000","Sharing standar 3u1m (bisa log tv)|20.000"]]]],
+["Viu","Streaming","🦄","",[["Anti limit",["1 month|7k","3 month|12k","6 month|18k","1 year|25k"]]]],
+["HBO Max","Streaming","🐼","Login tv wajib beli 2s",[["",["1 month std shar|18k","1 month ulti shar|20k"]]]],
+["WeTV","Streaming","🐹","",[["",["1 month shar 5u|6k","1 month shar 3u|9k","1 month private|32k"]]]],
+["Vidio Platinum","Streaming","🦊","",[["",["1 month shar mobile|17.000","1 month priv 1m mobile|25.000","1 year priv (pay tv)|10.000"]]]],
+["Disney+","Streaming","🧚","",[
+ ["Sharing 10 user",["1 day|4k","3 day|7k","1 week|10k","1 month|20k"]],
+ ["Sharing 6 user",["1 day|6k","3 day|8.5k","1 week|15k","1 month|30k"]],
+ ["Sharing 3 user",["1 day|7.5k","3 day|10k","1 week|17k","1 month|35k"]],
+ ["Jaspay Disney",["1 month plan premium|130k","1 month plan basic|80k"]]]],
+["Canva","Editing","🌈","Head/owner: design +100p",[
+ ["Member invite",["1 month|5k","2 month|8k","3 month|12k"]],
+ ["Lainnya",["1 year|15k","Edu|18k","1 month head/owner|10k"]]]],
+["PicsArt","Editing","🎀","",[["",["1 month shar|5k","1 year shar (no renew)|19k","1 month private|10k"]]]],
+["VSCO","Editing","🌸","",[["",["1 year shar plus andro|12k","1 year shar pro andro|15k","1 year shar plus ios|14k","1 year shar pro ios|17k"]]]],
+["CapCut","Editing","🧁","",[["",["7 day shar 2u|8k","7 day private|13k","1 month shar 2u|20k","1 month private|35k"]]]],
+["Alight Motion","Editing","🪄","",[["",["Shar 1 month alldev|4k","Shar 1 year alldev|6k","Private 1 year acc s|15k","Private 1 year acc b|16k"]]]],
+["Meitu","Editing","🍓","",[["",["Private vip 1 week|8k","Private vip+ 1 week|10k"]]]],
+["Wink","Editing","🐱","",[["",["Private vip+ 1 week|8k"]]]],
+["Dazzcam iOS","Editing","🐶","",[["",["1 year sharing|25k"]]]],
+["Lightroom","Editing","🌷","",[["",["Sharing 1 month|5.000","Sharing 1 month|10.000"]]]],
+["Spotify","Lainnya","🐸","Acc buyer +2k",[["",["1 month famplan|18k","2 month famplan|-","1 month indplan|23k"]]]],
+["YouTube","Lainnya","🐨","Acc seller +5k",[["",["1 month famplan|5k","1 month indplan|10k","1 month head|15k"]]]],
+["Wattpad","Lainnya","🦋","",[["",["1 month shar|7k","1 year shar|-"]]]],
+["Apple Music","Lainnya","🍭","",[["",["1 month indplan andro|10k","1 month imess|7k"]]]],
+["Get Contact","Lainnya","🐧","",[["",["1b private (no b)|13k"]]]],
+["ChatGPT","Lainnya","🧸","",[
+ ["ChatGPT Go",["Sharing 7 hari|15k","Sharing 1 bulan|35k","Private 1 bulan|65k"]],
+ ["ChatGPT Plus",["Sharing 1 day|10k","Sharing 3 day|15k","Sharing 7 day|20k","Sharing 1 month|40k","Private 1 bulan (fullgar)|190k"]]]],
+["Gemini AI","Lainnya","🐬","",[["",["Invite 1 month|10k","Plus sharing 1 month|15k","Pro private 1 month|25k"]]]]
+];
+const CATS = ["Semua","Streaming","Editing","Lainnya"];
+const COL = {Streaming:"#ff5fa2",Editing:"#1fae66",Lainnya:"#ffa8cf"};
+const K = v => v==="-" ? null : /k$/i.test(v) ? Math.round(parseFloat(v)*1000) : parseInt(v.replace(/\./g,""),10);
+const rp = n => n==null ? "–" : "Rp" + n.toLocaleString("id-ID");
+const $ = id => document.getElementById(id);
+let cat = "Semua", term = "";
+
+// loading
+const MSG = ["Menyalakan mesin gacha…","Membangunkan admin dari tidur…","Mengelus Mochi biar semangat…","Mengisi kuota sabar…","Mencuci akun premium sampai kinclong…","Hampir siap, jangan kabur ya!"];
+let pct = 0;
+const tick = setInterval(() => {
+  pct = Math.min(100, pct + 4 + Math.random()*9);
+  $("lfill").style.width = pct + "%";
+  $("lmsg").textContent = MSG[Math.min(MSG.length-1, Math.floor(pct/100*MSG.length))];
+  if (pct >= 100) { clearInterval(tick); $("lmsg").textContent = "Siap! Semua level terbuka ✓"; $("skip").hidden = true; $("start").style.display = "inline-block"; $("start").focus(); }
+}, 260);
+function closeLoader(){ clearInterval(tick); $("loader").classList.add("done"); setTimeout(()=>$("loader").remove(),600); }
+$("start").onclick = closeLoader; $("skip").onclick = closeLoader;
+
+// mascot XP
+let xp = 0;
+$("ball").onclick = e => {
+  xp++; $("xp").textContent = "Mochi XP: " + xp;
+  const p = document.createElement("div"); p.className = "pop"; p.textContent = xp === 10 ? "MOCHI UDAH KENYANG 😆" : "+1 ★";
+  p.style.left = (e.clientX || innerWidth/2) - 20 + "px"; p.style.top = (e.clientY || 200) - 20 + "px";
+  document.body.appendChild(p); setTimeout(()=>p.remove(),800);
+};
+
+function card(a){
+  const [n,c,e,note,gs] = a;
+  const ul = rows => `<ul class="pl">` + rows.map(r => { const [l,p] = r.split("|"); return `<li><span>${l}</span><b>${rp(K(p))}</b></li>`; }).join("") + `</ul>`;
+  const body = (gs.length > 1
+    ? gs.map(([t,rows],i) => `<details class="g"${i===0?" open":""}><summary>${t} (${rows.length})</summary>${ul(rows)}</details>`).join("")
+    : gs.map(([t,rows]) => (t?`<h4>${t}</h4>`:"") + ul(rows)).join("")) || `<small>Harga: tanyakan ke admin</small>`;
+  const msg = encodeURIComponent(`Halo kak, aku mau tanya stok / order ${n}. Apakah tersedia?`);
+  return `<div class="card box"><span class="em">${e}</span><h3>${n}</h3><span class="tag">${c}</span>${note?`<small>${note}</small>`:""}${body}
+    <a class="btn pink" href="https://wa.me/${WA}?text=${msg}" target="_blank" rel="noopener">Tanya stok &amp; order</a></div>`;
+}
+function renderTabs(){
+  $("tabs").innerHTML = CATS.map(c => `<button class="tab" data-c="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
+  $("tabs").querySelectorAll(".tab").forEach(b => b.onclick = () => { cat = b.dataset.c; renderTabs(); renderGrid(); });
+}
+function renderGrid(){
+  const list = APPS.filter(a => (cat==="Semua"||a[1]===cat) && a[0].toLowerCase().includes(term));
+  $("grid").innerHTML = list.length ? list.map(card).join("") : "<p>Aplikasi tidak ditemukan. Tanyakan ke admin ya.</p>";
+}
+const prices = a => a[4].flatMap(g => g[1].map(r => K(r.split("|")[1]))).filter(v => v != null);
+function renderCharts(){
+  const low = APPS.map(a => [a[0], Math.min(...prices(a))]).filter(x => isFinite(x[1])).sort((a,b)=>a[1]-b[1]).slice(0,8);
+  const max = low[low.length-1][1];
+  $("bars").innerHTML = low.map(([n,v]) => `<div class="bar"><span>${n}</span><div class="tr"><i data-w="${Math.max(12,v/max*100)}"></i></div><b>${v/1000}k</b></div>`).join("");
+  setTimeout(()=>document.querySelectorAll(".bar i").forEach(e=>e.style.width=e.dataset.w+"%"),300);
+  const sums = {}; APPS.forEach(a => sums[a[1]] = (sums[a[1]]||0) + prices(a).length);
+  const tot = Object.values(sums).reduce((a,b)=>a+b,0), R = 15.9155; let off = 0, arcs = "";
+  Object.entries(sums).forEach(([k,v]) => {
+    const pc = v/tot*100;
+    arcs += `<circle r="${R}" cx="21" cy="21" fill="none" stroke="${COL[k]}" stroke-width="7" stroke-dasharray="${pc} ${100-pc}" stroke-dashoffset="${25-off}"/>`;
+    off += pc;
+  });
+  $("donut").innerHTML = `<svg viewBox="0 0 42 42" width="190" height="190" role="img" aria-label="Jumlah paket per kategori">${arcs}<text x="21" y="22.5" text-anchor="middle" font-size="5" font-family="Fredoka" fill="currentColor">${tot}</text><text x="21" y="27" text-anchor="middle" font-size="2.8" fill="currentColor">paket</text></svg>`;
+  $("legend").innerHTML = Object.entries(sums).map(([k,v]) => `<span style="--c:${COL[k]}">${k}: ${v} paket</span>`).join("");
+}
+function calc(){ const h=+$("rh").value, d=+$("rd").value, s=+$("rs").value, f=+$("rf").value; $("rres").textContent = (h && d) ? rp(Math.round(h/d*s*f)) : "Rp0"; }
+["rh","rd","rs","rf"].forEach(i => { $(i).oninput = calc; $(i).onchange = calc; });
+$("q").oninput = e => { term = e.target.value.toLowerCase(); renderGrid(); };
+$("copy").onclick = async () => {
+  try { await navigator.clipboard.writeText($("tpl").textContent); $("copy").textContent = "Tersalin ✓"; }
+  catch(e){ $("copy").textContent = "Tekan lama teks untuk menyalin"; }
+};
+renderTabs(); renderGrid(); renderCharts(); calc();
+</script>
+</body>
+</html>
